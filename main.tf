@@ -1,80 +1,113 @@
 #This module builds out all transits
 module "transit" {
-  for_each = var.transit
+  for_each = var.transit_firenet
   source   = "/mnt/c/Users/Dennis/Aviatrix/repositories/Modules/terraform-aviatrix-mc-transit"
   #source   = "terraform-aviatrix-modules/mc-transit/aviatrix"
   #version  = "2.0.0"
 
-  cloud                            = each.value.cloud
+  cloud                            = each.value.transit_cloud
   cidr                             = each.value.transit_cidr
-  region                           = each.value.region_name
-  local_as_number                  = each.value.asn
-  account                          = coalesce(local.transit[each.key].account, lookup(local.account, each.value.cloud, null))
-  az_support                       = local.transit[each.key].az_support
-  az1                              = local.transit[each.key].az1
-  az2                              = local.transit[each.key].az2
-  bgp_ecmp                         = local.transit[each.key].bgp_ecmp
-  bgp_lan_interfaces               = local.transit[each.key].bgp_lan_interfaces
-  bgp_manual_spoke_advertise_cidrs = local.transit[each.key].bgp_manual_spoke_advertise_cidrs
-  bgp_polling_time                 = local.transit[each.key].bgp_polling_time
-  connected_transit                = local.transit[each.key].connected_transit
-  customer_managed_keys            = local.transit[each.key].customer_managed_keys
-  enable_active_standby_preemptive = local.transit[each.key].enable_active_standby_preemptive
-  enable_advertise_transit_cidr    = local.transit[each.key].enable_advertise_transit_cidr
-  enable_bgp_over_lan              = local.transit[each.key].enable_bgp_over_lan
-  enable_egress_transit_firenet    = local.transit[each.key].enable_egress_transit_firenet
-  enable_encrypt_volume            = coalesce(local.transit[each.key].enable_encrypt_volume, lower(each.value.cloud) == "aws" ? true : false)
-  enable_firenet                   = local.transit[each.key].enable_firenet
-  enable_multi_tier_transit        = local.transit[each.key].enable_multi_tier_transit
-  enable_s2c_rx_balancing          = local.transit[each.key].enable_s2c_rx_balancing
-  enable_segmentation              = local.transit[each.key].segmentation
-  enable_transit_firenet           = local.transit[each.key].enable_transit_firenet || local.transit[each.key].firenet
-  ha_bgp_lan_interfaces            = local.transit[each.key].ha_bgp_lan_interfaces
-  ha_cidr                          = local.transit[each.key].ha_cidr
-  ha_gw                            = local.transit[each.key].ha_gw
-  ha_region                        = local.transit[each.key].ha_region
-  hybrid_connection                = local.transit[each.key].hybrid_connection
-  insane_mode                      = local.transit[each.key].insane_mode
-  instance_size                    = local.transit[each.key].instance_size
-  lan_cidr                         = local.transit[each.key].lan_cidr
-  learned_cidr_approval            = local.transit[each.key].learned_cidr_approval
-  learned_cidrs_approval_mode      = local.transit[each.key].learned_cidrs_approval_mode
-  legacy_transit_vpc               = local.transit[each.key].legacy_transit_vpc
-  name                             = local.transit[each.key].name
-  resource_group                   = local.transit[each.key].resource_group
-  single_az_ha                     = local.transit[each.key].single_az_ha
-  single_ip_snat                   = local.transit[each.key].single_ip_snat
-  tags                             = local.transit[each.key].tags
-  tunnel_detection_time            = local.transit[each.key].tunnel_detection_time
+  region                           = each.value.transit_region_name
+  local_as_number                  = each.value.transit_asn
+  account                          = coalesce(local.transit[each.key].transit_account, lookup(var.transit_accounts, each.value.transit_cloud, null))
+  az_support                       = local.transit[each.key].transit_az_support
+  az1                              = local.transit[each.key].transit_az1
+  az2                              = local.transit[each.key].transit_az2
+  bgp_ecmp                         = local.transit[each.key].transit_bgp_ecmp
+  bgp_lan_interfaces               = local.transit[each.key].transit_bgp_lan_interfaces
+  bgp_manual_spoke_advertise_cidrs = local.transit[each.key].transit_bgp_manual_spoke_advertise_cidrs
+  bgp_polling_time                 = local.transit[each.key].transit_bgp_polling_time
+  connected_transit                = local.transit[each.key].transit_connected_transit
+  customer_managed_keys            = local.transit[each.key].transit_customer_managed_keys
+  enable_active_standby_preemptive = local.transit[each.key].transit_enable_active_standby_preemptive
+  enable_advertise_transit_cidr    = local.transit[each.key].transit_enable_advertise_transit_cidr
+  enable_bgp_over_lan              = local.transit[each.key].transit_enable_bgp_over_lan
+  enable_egress_transit_firenet    = local.transit[each.key].transit_enable_egress_transit_firenet
+  enable_encrypt_volume            = coalesce(local.transit[each.key].transit_enable_encrypt_volume, lower(each.value.transit_cloud) == "aws" ? true : false)
+  enable_firenet                   = local.transit[each.key].transit_enable_firenet
+  enable_multi_tier_transit        = local.transit[each.key].transit_enable_multi_tier_transit
+  enable_s2c_rx_balancing          = local.transit[each.key].transit_enable_s2c_rx_balancing
+  enable_segmentation              = local.transit[each.key].transit_segmentation
+  enable_transit_firenet           = local.transit[each.key].transit_enable_transit_firenet || local.transit[each.key].firenet
+  ha_bgp_lan_interfaces            = local.transit[each.key].transit_ha_bgp_lan_interfaces
+  ha_cidr                          = local.transit[each.key].transit_ha_cidr
+  ha_gw                            = local.transit[each.key].transit_ha_gw
+  ha_region                        = local.transit[each.key].transit_ha_region
+  hybrid_connection                = local.transit[each.key].transit_hybrid_connection
+  insane_mode                      = local.transit[each.key].transit_insane_mode
+  instance_size                    = local.transit[each.key].transit_instance_size
+  lan_cidr                         = local.transit[each.key].transit_lan_cidr
+  learned_cidr_approval            = local.transit[each.key].transit_learned_cidr_approval
+  learned_cidrs_approval_mode      = local.transit[each.key].transit_learned_cidrs_approval_mode
+  legacy_transit_vpc               = local.transit[each.key].transit_legacy_transit_vpc
+  name                             = local.transit[each.key].transit_name
+  resource_group                   = local.transit[each.key].transit_resource_group
+  single_az_ha                     = local.transit[each.key].transit_single_az_ha
+  single_ip_snat                   = local.transit[each.key].transit_single_ip_snat
+  tags                             = local.transit[each.key].transit_tags
+  tunnel_detection_time            = local.transit[each.key].transit_tunnel_detection_time
 }
 
 #This module builds out firenet, only on transits for which Firenet is enabled.
 module "firenet" {
   for_each = { for k, v in module.transit : k => v if local.transit[k].firenet } #Filter transits that have firenet enabled
-  source   = "terraform-aviatrix-modules/mc-firenet/aviatrix"
-  version  = "1.0.0"
+
+  source   = "/mnt/c/Users/Dennis/Aviatrix/repositories/Modules/terraform-aviatrix-mc-firenet"
+  #source   = "terraform-aviatrix-modules/mc-firenet/aviatrix"
+  #version  = "1.0.0"
 
   transit_module = module.transit[each.key]
-  firewall_image = lookup(local.firewall_image, local.transit[each.key].cloud, null)
+
+  attached                             = local.transit[each.key].firenet_attached
+  bootstrap_bucket_name_1              = local.transit[each.key].firenet_bootstrap_bucket_name_1
+  bootstrap_bucket_name_2              = local.transit[each.key].firenet_bootstrap_bucket_name_2
+  bootstrap_storage_name_1             = local.transit[each.key].firenet_bootstrap_storage_name_1
+  bootstrap_storage_name_2             = local.transit[each.key].firenet_bootstrap_storage_name_2
+  custom_fw_names                      = local.transit[each.key].firenet_custom_fw_names
+  east_west_inspection_excluded_cidrs  = local.transit[each.key].firenet_east_west_inspection_excluded_cidrs
+  egress_cidr                          = local.transit[each.key].firenet_egress_cidr
+  egress_enabled                       = local.transit[each.key].firenet_egress_enabled
+  egress_static_cidrs                  = local.transit[each.key].firenet_egress_static_cidrs
+  fail_close_enabled                   = local.transit[each.key].firenet_fail_close_enabled
+  file_share_folder_1                  = local.transit[each.key].firenet_file_share_folder_1
+  file_share_folder_2                  = local.transit[each.key].firenet_file_share_folder_2
+  firewall_image                       = lookup(local.firewall_image, local.transit[each.key].transit_cloud, null)
+  firewall_image_id                    = local.transit[each.key].firenet_firewall_image_id
+  firewall_image_version               = local.transit[each.key].firenet_firewall_image_version
+  fw_amount                            = local.transit[each.key].firenet_fw_amount
+  iam_role_1                           = local.transit[each.key].firenet_iam_role_1
+  iam_role_2                           = local.transit[each.key].firenet_iam_role_2
+  inspection_enabled                   = local.transit[each.key].firenet_inspection_enabled
+  instance_size                        = local.transit[each.key].firenet_instance_size
+  keep_alive_via_lan_interface_enabled = local.transit[each.key].firenet_keep_alive_via_lan_interface_enabled
+  mgmt_cidr                            = local.transit[each.key].firenet_mgmt_cidr
+  password                             = local.transit[each.key].firenet_password
+  storage_access_key_1                 = local.transit[each.key].firenet_storage_access_key_1
+  storage_access_key_2                 = local.transit[each.key].firenet_storage_access_key_2
+  tags                                 = local.transit[each.key].firenet_tags
+  use_gwlb                             = local.transit[each.key].firenet_use_gwlb
+  user_data_1                          = local.transit[each.key].firenet_user_data_1
+  user_data_2                          = local.transit[each.key].firenet_user_data_2
+  username                             = local.transit[each.key].firenet_username
 }
 
 #Create full mesh peering intra-cloud  
-module "transit-peerings-intra-cloud" {
+module "transit_peerings_intra_cloud" {
   for_each = toset(local.cloudlist)
   source   = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
   version  = "1.0.5"
 
-  transit_gateways = [for k, v in module.transit : v.transit_gateway.gw_name if local.transit[k].cloud == each.value]
+  transit_gateways = [for k, v in module.transit : v.transit_gateway.gw_name if local.transit[k].transit_cloud == each.value]
   excluded_cidrs   = ["0.0.0.0/0", ]
 }
 
-#Create full mesh peering inter-cloud and prepend path to prefer intra-cloud over inter-cloud, for traffic originated outside of the Aviatrix transit (e.g. DC VPN connected to multiple transits).
-module "transit-peerings-inter-cloud" {
+#Create full mesh peering inter-cloud between 2 sets of gateways and prepend path to prefer intra-cloud over inter-cloud, for traffic originated outside of the Aviatrix transit (e.g. DC VPN connected to multiple transits).
+module "transit_peerings_inter_cloud" {
   for_each = toset(local.cloudlist)
   source   = "git@github.com:terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering-advanced.git"
 
-  set1 = { for k, v in module.transit : v.transit_gateway.gw_name => v.transit_gateway.local_as_number if local.transit[k].cloud == each.value }                                                                 #Create list of all transit within specified cloud
-  set2 = { for k, v in module.transit : v.transit_gateway.gw_name => v.transit_gateway.local_as_number if !contains(slice(local.cloudlist, 0, index(local.cloudlist, each.value) + 1), local.transit[k].cloud) } #Create list of all transit NOT in specified cloud
+  set1 = { for k, v in module.transit : v.transit_gateway.gw_name => v.transit_gateway.local_as_number if local.transit[k].transit_cloud == each.value }                                                                 #Create list of all transit within specified cloud
+  set2 = { for k, v in module.transit : v.transit_gateway.gw_name => v.transit_gateway.local_as_number if !contains(slice(local.cloudlist, 0, index(local.cloudlist, each.value) + 1), local.transit[k].transit_cloud) } #Create list of all transit NOT in specified cloud
 
   as_path_prepend = true
   excluded_cidrs  = ["0.0.0.0/0", ]
