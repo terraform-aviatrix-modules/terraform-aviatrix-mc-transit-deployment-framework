@@ -1,6 +1,6 @@
 variable "transit_firenet" {
   type = map(object({
-    
+
     #Transit arguments
     transit_cloud                            = string,
     transit_cidr                             = string,
