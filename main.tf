@@ -1,3 +1,4 @@
+#This module builds out all transits
 module "transit" {
   for_each = var.transit
   source   = "/mnt/c/Users/Dennis/Aviatrix/repositories/Modules/terraform-aviatrix-mc-transit"
@@ -22,12 +23,12 @@ module "transit" {
   enable_advertise_transit_cidr    = local.transit[each.key].enable_advertise_transit_cidr
   enable_bgp_over_lan              = local.transit[each.key].enable_bgp_over_lan
   enable_egress_transit_firenet    = local.transit[each.key].enable_egress_transit_firenet
-  enable_encrypt_volume            = local.transit[each.key].enable_encrypt_volume
+  enable_encrypt_volume            = coalesce(local.transit[each.key].enable_encrypt_volume, lower(each.value.cloud) == "aws" ? true : false)
   enable_firenet                   = local.transit[each.key].enable_firenet
   enable_multi_tier_transit        = local.transit[each.key].enable_multi_tier_transit
   enable_s2c_rx_balancing          = local.transit[each.key].enable_s2c_rx_balancing
   enable_segmentation              = local.transit[each.key].segmentation
-  enable_transit_firenet           = local.transit[each.key].enable_transit_firenet
+  enable_transit_firenet           = local.transit[each.key].enable_transit_firenet || local.transit[each.key].firenet
   ha_bgp_lan_interfaces            = local.transit[each.key].ha_bgp_lan_interfaces
   ha_cidr                          = local.transit[each.key].ha_cidr
   ha_gw                            = local.transit[each.key].ha_gw
@@ -47,8 +48,9 @@ module "transit" {
   tunnel_detection_time            = local.transit[each.key].tunnel_detection_time
 }
 
+#This module builds out firenet, only on transits for which Firenet is enabled.
 module "firenet" {
-  for_each = { for k, v in module.transit : k => module.transit[k] if local.transit[k].enable_transit_firenet } #Filter transits that have firenet enabled
+  for_each = { for k, v in module.transit : k => v if local.transit[k].firenet } #Filter transits that have firenet enabled
   source   = "terraform-aviatrix-modules/mc-firenet/aviatrix"
   version  = "1.0.0"
 
@@ -62,7 +64,7 @@ module "transit-peerings-intra-cloud" {
   source   = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
   version  = "1.0.5"
 
-  transit_gateways = [for k, v in module.transit : module.transit[k].transit_gateway.gw_name if local.transit[k].cloud == each.value]
+  transit_gateways = [for k, v in module.transit : v.transit_gateway.gw_name if local.transit[k].cloud == each.value]
   excluded_cidrs   = ["0.0.0.0/0", ]
 }
 
@@ -71,8 +73,8 @@ module "transit-peerings-inter-cloud" {
   for_each = toset(local.cloudlist)
   source   = "git@github.com:terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering-advanced.git"
 
-  set1 = { for k, v in module.transit : module.transit[k].transit_gateway.gw_name => module.transit[k].transit_gateway.local_as_number if local.transit[k].cloud == each.value }                                                                 #Create list of all transit within specified cloud
-  set2 = { for k, v in module.transit : module.transit[k].transit_gateway.gw_name => module.transit[k].transit_gateway.local_as_number if !contains(slice(local.cloudlist, 0, index(local.cloudlist, each.value) + 1), local.transit[k].cloud) } #Create list of all transit NOT in specified cloud
+  set1 = { for k, v in module.transit : v.transit_gateway.gw_name => v.transit_gateway.local_as_number if local.transit[k].cloud == each.value }                                                                 #Create list of all transit within specified cloud
+  set2 = { for k, v in module.transit : v.transit_gateway.gw_name => v.transit_gateway.local_as_number if !contains(slice(local.cloudlist, 0, index(local.cloudlist, each.value) + 1), local.transit[k].cloud) } #Create list of all transit NOT in specified cloud
 
   as_path_prepend = true
   excluded_cidrs  = ["0.0.0.0/0", ]

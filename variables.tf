@@ -5,6 +5,7 @@ variable "transit" {
     region_name                      = string,
     asn                              = number,
     account                          = optional(string),
+    firenet                          = optional(bool),
     az_support                       = optional(bool),
     az1                              = optional(string),
     az2                              = optional(string),
@@ -49,8 +50,8 @@ variable "transit" {
 locals {
   transit = defaults(var.transit, {
     # egress_enabled                   = true
-    enable_encrypt_volume  = true
     enable_transit_firenet = false
+    firenet                = false
     segmentation           = true
   })
 
