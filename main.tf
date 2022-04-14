@@ -35,9 +35,9 @@ module "transit-peerings-intra-cloud" {
 #Create full mesh peering inter-cloud and prepend path to prefer intra-cloud over inter-cloud, for traffic originated outside of the Aviatrix transit (e.g. DC VPN connected to multiple transits).
 module "transit-peerings-inter-cloud" {
   for_each = toset(local.cloudlist)
-  source = "git@github.com:terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering-advanced.git"
+  source   = "git@github.com:terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering-advanced.git"
 
-  set1 = { for k, v in module.transit : module.transit[k].transit_gateway.gw_name => module.transit[k].transit_gateway.local_as_number if local.transit[k].cloud == each.value } #Create list of all transit within specified cloud
+  set1 = { for k, v in module.transit : module.transit[k].transit_gateway.gw_name => module.transit[k].transit_gateway.local_as_number if local.transit[k].cloud == each.value }                                                                 #Create list of all transit within specified cloud
   set2 = { for k, v in module.transit : module.transit[k].transit_gateway.gw_name => module.transit[k].transit_gateway.local_as_number if !contains(slice(local.cloudlist, 0, index(local.cloudlist, each.value) + 1), local.transit[k].cloud) } #Create list of all transit NOT in specified cloud
 
   as_path_prepend = true

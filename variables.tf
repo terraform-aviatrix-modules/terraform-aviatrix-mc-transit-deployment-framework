@@ -35,5 +35,5 @@ locals {
     azure = "Azure"
   }
 
-cloudlist = ["aws", "azure", "ali", "oci", "gcp"]
+  cloudlist = ["aws", "azure", "ali", "oci", "gcp"]
 }
