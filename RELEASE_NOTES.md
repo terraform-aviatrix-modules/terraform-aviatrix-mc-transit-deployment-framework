@@ -1,9 +1,4 @@
-Please update this file with information about changes between version and upgrade information.
+# terraform-aviatrix-mc-transit-adoption-framework - release notes
 
-# module name - release notes
-
-## Release Version
-Describe release
-
-### Feature
-Describe new featue
+## v1.0.0
+Initial public release
