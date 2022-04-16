@@ -9,7 +9,7 @@ module "transit" {
   cidr                             = each.value.transit_cidr
   region                           = each.value.transit_region_name
   local_as_number                  = each.value.transit_asn
-  account                          = coalesce(local.transit[each.key].transit_account, lookup(var.transit_accounts, each.value.transit_cloud, null))
+  account                          = coalesce(local.transit[each.key].transit_account, lookup(var.default_transit_accounts, each.value.transit_cloud, null))
   az_support                       = local.transit[each.key].transit_az_support
   az1                              = local.transit[each.key].transit_az1
   az2                              = local.transit[each.key].transit_az2
@@ -71,7 +71,7 @@ module "firenet" {
   fail_close_enabled                   = local.transit[each.key].firenet_fail_close_enabled
   file_share_folder_1                  = local.transit[each.key].firenet_file_share_folder_1
   file_share_folder_2                  = local.transit[each.key].firenet_file_share_folder_2
-  firewall_image                       = lookup(local.firewall_image, local.transit[each.key].transit_cloud, null)
+  firewall_image                       = coalesce(local.transit[each.key].firenet_firewall_image, lookup(var.default_firewall_image, local.transit[each.key].transit_cloud, null))
   firewall_image_id                    = local.transit[each.key].firenet_firewall_image_id
   firewall_image_version               = local.transit[each.key].firenet_firewall_image_version
   fw_amount                            = local.transit[each.key].firenet_fw_amount
@@ -91,24 +91,55 @@ module "firenet" {
   username                             = local.transit[each.key].firenet_username
 }
 
+### Peering for full_mesh peering mode ###
+#Create full mesh peering 
+module "full_mesh_peering" {
+  count = local.peering_mode == "full_mesh" ? 1 : 0
+  source   = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
+  version  = "1.0.5"
+
+  transit_gateways = [for k,v in module.transit : v.transit_gateway.gw_name]
+  excluded_cidrs   = var.excluded_cidrs
+}
+##########################################
+
+### Peering for full_mesh_optimized peering mode ###
 #Create full mesh peering intra-cloud  
-module "transit_peerings_intra_cloud" {
-  for_each = toset(local.cloudlist)
+module "full_mesh_optimized_peering_intra_cloud" {
+  for_each = local.peering_mode == "full_mesh_optimized" ? toset(local.cloudlist) : []
   source   = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
   version  = "1.0.5"
 
   transit_gateways = [for k, v in module.transit : v.transit_gateway.gw_name if local.transit[k].transit_cloud == each.value]
-  excluded_cidrs   = ["0.0.0.0/0", ]
+  excluded_cidrs   = var.excluded_cidrs
 }
 
 #Create full mesh peering inter-cloud between 2 sets of gateways and prepend path to prefer intra-cloud over inter-cloud, for traffic originated outside of the Aviatrix transit (e.g. DC VPN connected to multiple transits).
-module "transit_peerings_inter_cloud" {
-  for_each = toset(local.cloudlist)
+module "full_mesh_optimized_peering_inter_cloud" {
+  for_each = local.peering_mode == "full_mesh_optimized" ? toset(local.cloudlist) : []
   source   = "git@github.com:terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering-advanced.git"
 
   set1 = { for k, v in module.transit : v.transit_gateway.gw_name => v.transit_gateway.local_as_number if local.transit[k].transit_cloud == each.value }                                                                 #Create list of all transit within specified cloud
   set2 = { for k, v in module.transit : v.transit_gateway.gw_name => v.transit_gateway.local_as_number if !contains(slice(local.cloudlist, 0, index(local.cloudlist, each.value) + 1), local.transit[k].transit_cloud) } #Create list of all transit NOT in specified cloud
 
   as_path_prepend = true
-  excluded_cidrs  = ["0.0.0.0/0", ]
+  excluded_cidrs  = var.excluded_cidrs
 }
+##########################################
+
+### Peering for custom peering mode ###
+resource "aviatrix_transit_gateway_peering" "custom_peering" {
+  for_each = local.peering_mode == "custom" ? var.peering_map : {}
+
+  transit_gateway_name1                       = each.value.gw1_name
+  transit_gateway_name2                       = each.value.gw2_name
+  gateway1_excluded_network_cidrs             = each.value.gw1_excluded_cidrs
+  gateway2_excluded_network_cidrs             = each.value.gw2_excluded_cidrs
+  gateway1_excluded_tgw_connections           = each.value.gw1_excluded_tgw_connections 
+  gateway2_excluded_tgw_connections           = each.value.gw2_excluded_tgw_connections 
+  prepend_as_path1                            = each.value.prepend_as_path1
+  prepend_as_path2                            = each.value.prepend_as_path2
+  enable_peering_over_private_network         = each.value.enable_peering_over_private_network
+  enable_insane_mode_encryption_over_internet = each.value.enable_insane_mode_encryption_over_internet
+}
+##########################################

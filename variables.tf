@@ -61,6 +61,7 @@ variable "transit_firenet" {
     firenet_fail_close_enabled                   = optional(bool),
     firenet_file_share_folder_1                  = optional(string),
     firenet_file_share_folder_2                  = optional(string),
+    firenet_firewall_image                       = optional(string),
     firenet_firewall_image_id                    = optional(string),
     firenet_firewall_image_version               = optional(string),
     firenet_fw_amount                            = optional(number),
@@ -81,25 +82,76 @@ variable "transit_firenet" {
   }))
 }
 
-variable "transit_accounts" {
+variable "default_transit_accounts" {
   description = "Default accounts for deploying transit architecture."
   type        = map(string)
   default     = {}
+  nullable    = false
+}
+
+variable "default_firewall_image" {
+  description = "Default firewall images for deploying Firenet."
+  type        = map(string)
+  default     = {}
+  nullable    = false
+}
+
+variable "peering_mode" {
+  type        = string
+  description = "Choose between full_mesh, full_mesh_optimized, custom or none."
+  default     = "full_mesh_optimized"
+  nullable    = false
+
+  validation {
+    condition     = contains(["full_mesh", "full_mesh_optimized", "custom", "none", ], lower(var.peering_mode))
+    error_message = "Invalid peering mode. Choose full_mesh, full_mesh_optimized, custom or none."
+  }
+}
+
+variable "peering_map" {
+  type = map(object({
+    gw1_name                                    = string,
+    gw2_name                                    = string,
+    gw1_excluded_cidrs                          = optional(list(string)),
+    gw2_excluded_cidrs                          = optional(list(string)),
+    gw1_excluded_tgw_connections                = optional(list(string)),
+    gw2_excluded_tgw_connections                = optional(list(string)),
+    prepend_as_path1                            = optional(list(string)),
+    prepend_as_path2                            = optional(list(string)),
+    enable_peering_over_private_network         = optional(bool),
+    enable_insane_mode_encryption_over_internet = optional(bool),
+  }))
+
+  description = "If peering_mode is custom, this map of peerings will be built."
+  default     = {}
+  nullable    = false
+}
+
+variable "excluded_cidrs" {
+  type        = list(string)
+  description = "List of CIDR's to exlude in peerings"
+  default     = ["0.0.0.0/0", ]
+  nullable    = false
 }
 
 locals {
+  peering_mode = lower(var.peering_mode)
+
   transit = defaults(var.transit_firenet, {
     transit_segmentation           = true
     transit_enable_transit_firenet = false
     firenet                        = false
   })
 
-  firewall_image = {
-    aws   = "",
-    azure = "Check Point CloudGuard IaaS Single Gateway R80.40 - Pay As You Go (NGTP)"
-  }
-
   cloudlist = ["aws", "azure", "ali", "oci", "gcp"]
+
+  configured_regions = distinct([for k, v in module.transit : coalesce(v.vpc.region, v.vpc.subnets[0].region)])
+
+  region_transit_map = (
+    { for region in local.configured_regions :
+      region => [for k, v in module.transit : v.transit_gateway.gw_name if v.vpc.region == region || v.vpc.subnets[0].region == region]
+    }
+  )
 }
 
 
