@@ -118,6 +118,8 @@ variable "peering_map" {
     gw2_excluded_tgw_connections                = optional(list(string)),
     prepend_as_path1                            = optional(list(string)),
     prepend_as_path2                            = optional(list(string)),
+    enable_single_tunnel_mode                   = optional(bool),
+    tunnel_count                                = optional(number),
     enable_peering_over_private_network         = optional(bool),
     enable_insane_mode_encryption_over_internet = optional(bool),
   }))

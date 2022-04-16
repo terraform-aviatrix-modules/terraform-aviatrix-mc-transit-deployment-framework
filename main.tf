@@ -94,11 +94,11 @@ module "firenet" {
 ### Peering for full_mesh peering mode ###
 #Create full mesh peering 
 module "full_mesh_peering" {
-  count = local.peering_mode == "full_mesh" ? 1 : 0
-  source   = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
-  version  = "1.0.5"
+  count   = local.peering_mode == "full_mesh" ? 1 : 0
+  source  = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
+  version = "1.0.5"
 
-  transit_gateways = [for k,v in module.transit : v.transit_gateway.gw_name]
+  transit_gateways = [for k, v in module.transit : v.transit_gateway.gw_name]
   excluded_cidrs   = var.excluded_cidrs
 }
 ##########################################
@@ -135,10 +135,12 @@ resource "aviatrix_transit_gateway_peering" "custom_peering" {
   transit_gateway_name2                       = each.value.gw2_name
   gateway1_excluded_network_cidrs             = each.value.gw1_excluded_cidrs
   gateway2_excluded_network_cidrs             = each.value.gw2_excluded_cidrs
-  gateway1_excluded_tgw_connections           = each.value.gw1_excluded_tgw_connections 
-  gateway2_excluded_tgw_connections           = each.value.gw2_excluded_tgw_connections 
+  gateway1_excluded_tgw_connections           = each.value.gw1_excluded_tgw_connections
+  gateway2_excluded_tgw_connections           = each.value.gw2_excluded_tgw_connections
   prepend_as_path1                            = each.value.prepend_as_path1
   prepend_as_path2                            = each.value.prepend_as_path2
+  enable_single_tunnel_mode                   = each.value.enable_single_tunnel_mode
+  tunnel_count                                = each.value.tunnel_count
   enable_peering_over_private_network         = each.value.enable_peering_over_private_network
   enable_insane_mode_encryption_over_internet = each.value.enable_insane_mode_encryption_over_internet
 }
