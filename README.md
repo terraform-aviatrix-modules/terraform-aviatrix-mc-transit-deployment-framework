@@ -1,20 +1,22 @@
-# terraform-aviatrix-mc-transit-adoption-framework
+# terraform-aviatrix-mc-transit-deployment-framework
 
 ### Description
 This module composes the mc-transit, mc-firenet and peering modules together to provide a reference transit layer implementation.
+
+<span style="color:red"><b>Warning:</b></span> This module leverages a Terraform [experimental feature](https://www.terraform.io/language/functions/defaults). Read the details of this feature and decide whether it is appropriate for you to adopt this module as-is, while using this feature.
 
 ### Compatibility
 Module version | Terraform version | Controller version | Terraform provider version
 :--- | :--- | :--- | :---
 v1.0.0 | 0.15-1.x | 6.6 | >= 2.21.2
 
-Check [release notes](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-adoption-framework/blob/master/RELEASE_NOTES.md) for more details.
-Check [Compatibility list](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-adoption-framework/blob/master/COMPATIBILITY.md) for older versions.
+Check [release notes](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/master/RELEASE_NOTES.md) for more details.
+Check [Compatibility list](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/master/COMPATIBILITY.md) for older versions.
 
 ### Usage Example
 ```
 module "framework" {
-  source  = "terraform-aviatrix-modules/mc-transit-adoption-framework/aviatrix"
+  source  = "terraform-aviatrix-modules/mc-transit-deployment-framework/aviatrix"
   version = "v1.0.0"
 
   default_transit_accounts = {
