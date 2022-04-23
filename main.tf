@@ -1,9 +1,8 @@
 #This module builds out all transits
 module "transit" {
   for_each = var.transit_firenet
-  source   = "/mnt/c/Users/Dennis/Aviatrix/repositories/Modules/terraform-aviatrix-mc-transit"
-  #source   = "terraform-aviatrix-modules/mc-transit/aviatrix"
-  #version  = "2.0.0"
+  source   = "terraform-aviatrix-modules/mc-transit/aviatrix"
+  version  = "2.0.1"
 
   cloud                            = each.value.transit_cloud
   cidr                             = each.value.transit_cidr
@@ -71,7 +70,7 @@ module "firenet" {
   fail_close_enabled                   = local.transit[each.key].firenet_fail_close_enabled
   file_share_folder_1                  = local.transit[each.key].firenet_file_share_folder_1
   file_share_folder_2                  = local.transit[each.key].firenet_file_share_folder_2
-  firewall_image                       = coalesce(local.transit[each.key].firenet_firewall_image, lookup(var.default_firewall_image, local.transit[each.key].transit_cloud, null))
+  firewall_image                       = coalesce(local.transit[each.key].firenet_firewall_image, lookup(var.default_firenet_firewall_image, local.transit[each.key].transit_cloud, null))
   firewall_image_id                    = local.transit[each.key].firenet_firewall_image_id
   firewall_image_version               = local.transit[each.key].firenet_firewall_image_version
   fw_amount                            = local.transit[each.key].firenet_fw_amount

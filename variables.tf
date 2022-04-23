@@ -16,7 +16,6 @@ variable "transit_firenet" {
     transit_bgp_polling_time                 = optional(number),
     transit_connected_transit                = optional(bool),
     transit_customer_managed_keys            = optional(bool),
-    transit_egress_enabled                   = optional(bool),
     transit_enable_active_standby_preemptive = optional(bool),
     transit_enable_advertise_transit_cidr    = optional(bool),
     transit_enable_bgp_over_lan              = optional(bool),
@@ -89,7 +88,7 @@ variable "default_transit_accounts" {
   nullable    = false
 }
 
-variable "default_firewall_image" {
+variable "default_firenet_firewall_image" {
   description = "Default firewall images for deploying Firenet."
   type        = map(string)
   default     = {}
