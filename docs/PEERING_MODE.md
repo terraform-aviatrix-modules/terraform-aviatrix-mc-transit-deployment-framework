@@ -26,18 +26,22 @@ In order to prevent the above scenario, we need to make the path between differe
 This makes the orange path less desireable, as it's length is now longer than the purple path. As such our traffic now follows the opptimized purple path. The orange path will still remain available for high-availability, were the purple path to become unavailable. This design has one side effect though. Because the inter-cloud path is now prepended, traffic between Azure and AWS in the Europe region would consider the path over the datacenter just as desireable as the direct path, because they would equal to a length of 2. To negate this, make sure to prepend the AS Path for any prefixes announced towards the DC. That way, when the DC propagates them onto the BGP peering with the other region, the path length will be longer than the direct path.
 
 ### Custom
-When the above peering mode's lack the required flexibility for your peering use case, the custom peering mode can be used to insert a peering list with all specific required peerings.
+When the above peering mode's lack the required flexibility for your peering use case, the custom peering mode can be used to insert a peering map with all specific required peerings. All arguments available in the [transit peering resource](https://registry.terraform.io/providers/AviatrixSystems/aviatrix/latest/docs/resources/aviatrix_transit_gateway_peering) can be used here, as this is a direct wrapper around this resource.
+As this is aimed for totally customized use, no defaults are assumed here. Which means, no networks CIDR's are filtered by default (e.g. 0.0.0.0/0).
 
 This map could look like this for example where we only want 2 peerings to be created:
 ```
   peering_map = {
     peering1 : {
-      gw1_name = (nonsensitive(module.transit_adoption_framework.transit["transit1"].transit_gateway.gw_name)),
-      gw2_name = (nonsensitive(module.transit_adoption_framework.transit["transit2"].transit_gateway.gw_name)),
+      gw1_name                            = (nonsensitive(module.transit_adoption_framework.transit["transit1"].transit_gateway.gw_name)),
+      gw2_name                            = (nonsensitive(module.transit_adoption_framework.transit["transit2"].transit_gateway.gw_name)),
+      enable_peering_over_private_network = true
     },
     peering2 : {
-      gw1_name = (nonsensitive(module.transit_adoption_framework.transit["transit1"].transit_gateway.gw_name)),
-      gw2_name = (nonsensitive(module.transit_adoption_framework.transit["transit3"].transit_gateway.gw_name))
+      gw1_name                        = (nonsensitive(module.transit_adoption_framework.transit["transit1"].transit_gateway.gw_name)),
+      gw2_name                        = (nonsensitive(module.transit_adoption_framework.transit["transit3"].transit_gateway.gw_name))
+      gateway1_excluded_network_cidrs = ["0.0.0.0/0",]
+      gateway2_excluded_network_cidrs = ["0.0.0.0/0",]
     },
   }
 ```
