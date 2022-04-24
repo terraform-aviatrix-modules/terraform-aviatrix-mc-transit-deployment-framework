@@ -80,7 +80,7 @@ The following variables are required:
 
 key | value
 :--- | :---
-transit_firenet | A map with all relevant transit and firenet arguments. See [Transit-Firenet map arguments](#transit-firenet-map-arguments) to see which arguments are supported and mandatory.
+transit_firenet | A map with all relevant transit and firenet arguments. See [Transit-Firenet map arguments](#transit-firenet-map-arguments) to see which arguments are supported and mandatory. Can also be provided as [JSON](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/master/examples/json_based_input/README.md) or [YAML](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/master/examples/yaml_based_input/README.md).
 
 The following variables are optional:
 
