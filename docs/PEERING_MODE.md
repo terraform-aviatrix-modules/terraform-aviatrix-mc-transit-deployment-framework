@@ -46,19 +46,20 @@ This map could look like this for example where we only want 2 peerings to be cr
   }
 ```
 
-List of arguments accepted:
-gw1_name
-gw2_name
-gw1_excluded_cidrs
-gw2_excluded_cidrs
-gw1_excluded_tgw_connections
-gw2_excluded_tgw_connections
-prepend_as_path1
-prepend_as_path2
-enable_single_tunnel_mode
-tunnel_count
-enable_peering_over_private_network
-enable_insane_mode_encryption_over_internet
+List of arguments accepted |
+:--- |
+gw1_name |
+gw2_name |
+gw1_excluded_cidrs |
+gw2_excluded_cidrs |
+gw1_excluded_tgw_connections |
+gw2_excluded_tgw_connections |
+prepend_as_path1 |
+prepend_as_path2 |
+enable_single_tunnel_mode |
+tunnel_count |
+enable_peering_over_private_network |
+enable_insane_mode_encryption_over_internet |
 
 ### None
 In case no peering is desired or when all peering configuration is done outside of this module, you can set peering_mode to none.
