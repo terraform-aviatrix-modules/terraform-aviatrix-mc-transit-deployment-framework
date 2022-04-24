@@ -1,8 +1,9 @@
 #This module builds out all transits
 module "transit" {
+  source  = "terraform-aviatrix-modules/mc-transit/aviatrix"
+  version = "2.0.1"
+
   for_each = var.transit_firenet
-  source   = "terraform-aviatrix-modules/mc-transit/aviatrix"
-  version  = "2.0.1"
 
   cloud                            = each.value.transit_cloud
   cidr                             = each.value.transit_cidr
@@ -49,10 +50,10 @@ module "transit" {
 
 #This module builds out firenet, only on transits for which Firenet is enabled.
 module "firenet" {
-  for_each = { for k, v in module.transit : k => v if local.transit[k].firenet } #Filter transits that have firenet enabled
+  source  = "terraform-aviatrix-modules/mc-firenet/aviatrix"
+  version = "1.0.1"
 
-  source   = "terraform-aviatrix-modules/mc-firenet/aviatrix"
-  version  = "1.0.1"
+  for_each = { for k, v in module.transit : k => v if local.transit[k].firenet } #Filter transits that have firenet enabled
 
   transit_module = module.transit[each.key]
 
@@ -104,9 +105,10 @@ module "full_mesh_peering" {
 ### Peering for full_mesh_optimized peering mode ###
 #Create full mesh peering intra-cloud  
 module "full_mesh_optimized_peering_intra_cloud" {
+  source  = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
+  version = "1.0.5"
+
   for_each = local.peering_mode == "full_mesh_optimized" ? toset(local.cloudlist) : []
-  source   = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
-  version  = "1.0.5"
 
   transit_gateways = [for k, v in module.transit : v.transit_gateway.gw_name if local.transit[k].transit_cloud == each.value]
   excluded_cidrs   = var.excluded_cidrs
@@ -114,8 +116,9 @@ module "full_mesh_optimized_peering_intra_cloud" {
 
 #Create full mesh peering inter-cloud between 2 sets of gateways and prepend path to prefer intra-cloud over inter-cloud, for traffic originated outside of the Aviatrix transit (e.g. DC VPN connected to multiple transits).
 module "full_mesh_optimized_peering_inter_cloud" {
+  source = "git@github.com:terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering-advanced.git"
+
   for_each = local.peering_mode == "full_mesh_optimized" ? toset(local.cloudlist) : []
-  source   = "git@github.com:terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering-advanced.git"
 
   set1 = { for k, v in module.transit : v.transit_gateway.gw_name => v.transit_gateway.local_as_number if local.transit[k].transit_cloud == each.value }                                                                 #Create list of all transit within specified cloud
   set2 = { for k, v in module.transit : v.transit_gateway.gw_name => v.transit_gateway.local_as_number if !contains(slice(local.cloudlist, 0, index(local.cloudlist, each.value) + 1), local.transit[k].transit_cloud) } #Create list of all transit NOT in specified cloud
