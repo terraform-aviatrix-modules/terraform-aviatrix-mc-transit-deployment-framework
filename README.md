@@ -89,7 +89,7 @@ key | default | value
 default_transit_accounts** | | Map of default access accounts to be used to deploy the transit Firenet infrastructure. (Valid keys are "aws", "azure", "gcp", "oci" and "ali".)
 default_firenet_firewall_image** | | Map of default firewall images for deploying Firenet. (Valid keys are "aws", "azure", "gcp" and "oci".)
 excluded_cidrs | ["0.0.0.0/0", ] | List of CIDR's to exlude in peerings (not used for custom peerings).
-peering_mode | full_mesh_optimized | Choose between full_mesh, full_mesh_optimized, custom or none.
+[peering_mode](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/master/docs/PEERING_MODE.md) | full_mesh_optimized | Choose between full_mesh, full_mesh_optimized, custom or none.
 peering_list | [] | If peering_mode is custom, this list of peerings will be built. Example: [{gw1_name : gw2_name},]
 
 **Any defaults that are not configured, need to be explicitly set in the transit_firenet variable for each entry, _if_ the argument is used (e.g. firenet_firewall_image does not require to be set if firenet is not deployed altogether).
