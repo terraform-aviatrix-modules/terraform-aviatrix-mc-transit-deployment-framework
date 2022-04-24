@@ -35,11 +35,11 @@ module "framework" {
 
     #Transit firenet in AWS, using default_firewall_image
     transit1a = {          
-      transit_cloud        = "aws",
-      transit_cidr         = "10.1.0.0/23",
+      transit_cloud       = "aws",
+      transit_cidr        = "10.1.0.0/23",
       transit_region_name = "eu-central-1",
-      transit_asn          = 65101,
-      firenet              = true
+      transit_asn         = 65101,
+      firenet             = true,
     },
 
     #Egress transit firenet, with different NGFW then provided in default_firewall_image (override).
@@ -48,9 +48,9 @@ module "framework" {
       transit_cidr                          = "10.1.0.0/23",
       transit_region_name                   = "eu-central-1",
       transit_asn                           = 65101,
-      transit_enable_egress_transit_firenet = true
-      firenet                               = true
-      firenet_firewall_image                = "Fortinet FortiGate Next-Generation Firewall"
+      transit_enable_egress_transit_firenet = true,
+      firenet                               = true,
+      firenet_firewall_image                = "Fortinet FortiGate Next-Generation Firewall",
     },    
 
     #Transit in Azure
@@ -69,7 +69,7 @@ module "framework" {
       transit_egress_cidr = "10.99.2.0/24",
       transit_region_name = "us-east1",
       transit_asn         = 65103,
-      firenet             = true
+      firenet             = true,
     },    
   }
 }
