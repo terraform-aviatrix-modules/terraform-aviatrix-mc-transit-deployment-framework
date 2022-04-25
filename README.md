@@ -47,7 +47,7 @@ module "framework" {
       transit_cloud                         = "aws",
       transit_cidr                          = "10.1.0.0/23",
       transit_region_name                   = "eu-central-1",
-      transit_asn                           = 65101,
+      transit_asn                           = 65111,
       transit_enable_egress_transit_firenet = true,
       firenet                               = true,
       firenet_firewall_image                = "Fortinet FortiGate Next-Generation Firewall",
@@ -189,4 +189,8 @@ This module will return the following outputs:
 
 key | description
 :---|:---
-\<keyname> | \<description of object that will be returned in this output>
+transit | A map containing all created transit objects
+firenet | A map containing all created firenet objects
+region_transit_map | A map of all regions with a list per region of transit gw names in that region.
+
+See how to use outputs to attach for example, [spokes](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/master/docs/OUTPUTS.md) or [VPN's](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/master/docs/OUTPUTS.md) to the transits created with this module.

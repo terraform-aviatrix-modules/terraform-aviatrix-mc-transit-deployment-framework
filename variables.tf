@@ -146,8 +146,10 @@ locals {
 
   cloudlist = ["aws", "azure", "ali", "oci", "gcp"]
 
+  #Create a list of all used regions
   configured_regions = distinct([for k, v in module.transit : coalesce(v.vpc.region, v.vpc.subnets[0].region)])
 
+  #Create a map with all used regions as key, with each a list of all transit gateway names in that region as value.
   region_transit_map = (
     { for region in local.configured_regions :
       region => [for k, v in module.transit : v.transit_gateway.gw_name if v.vpc.region == region || v.vpc.subnets[0].region == region]
