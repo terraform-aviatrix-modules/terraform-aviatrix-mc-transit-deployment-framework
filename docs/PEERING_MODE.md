@@ -29,17 +29,17 @@ This makes the orange path less desireable, as it's length is now longer than th
 When the above peering modes lack the required flexibility for your peering use case, the custom peering mode can be used to insert a peering map with all specific required peerings. All arguments available in the [transit peering resource](https://registry.terraform.io/providers/AviatrixSystems/aviatrix/latest/docs/resources/aviatrix_transit_gateway_peering) can be used here, as this is a direct wrapper around this resource.
 As this is aimed for totally customized use, no defaults are assumed here. Which means, no networks CIDR's are filtered by default (e.g. 0.0.0.0/0).
 
-This map could look like this for example where we only want 2 peerings to be created:
+This map could look like this for example where we only want 2 peerings to be created (module is named "framework" in this example):
 ```
   peering_map = {
     peering1 : {
-      gw1_name                            = (nonsensitive(module.transit_adoption_framework.transit["transit1"].transit_gateway.gw_name)),
-      gw2_name                            = (nonsensitive(module.transit_adoption_framework.transit["transit2"].transit_gateway.gw_name)),
-      enable_peering_over_private_network = true
+      gw1_name                            = module.framework.transit["transit1"].transit_gateway.gw_name,
+      gw2_name                            = module.framework.transit["transit2"].transit_gateway.gw_name,
+      enable_peering_over_private_network = true,
     },
     peering2 : {
-      gw1_name                        = (nonsensitive(module.transit_adoption_framework.transit["transit1"].transit_gateway.gw_name)),
-      gw2_name                        = (nonsensitive(module.transit_adoption_framework.transit["transit3"].transit_gateway.gw_name))
+      gw1_name                        = module.framework.transit["transit1"].transit_gateway.gw_name,
+      gw2_name                        = module.framework.transit["transit3"].transit_gateway.gw_name,
       gateway1_excluded_network_cidrs = ["0.0.0.0/0",]
       gateway2_excluded_network_cidrs = ["0.0.0.0/0",]
     },

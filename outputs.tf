@@ -1,6 +1,12 @@
+#Omit all firenet details from transit output (as entire output gets marked sensitive as a result of firenet details)
 output "transit" {
-  value     = module.transit
-  sensitive = true
+  value = (
+    { for k, v in module.transit : k => {
+      vpc             = v.vpc,
+      transit_gateway = v.transit_gateway,
+      }
+    }
+  )
 }
 
 output "firenet" {
