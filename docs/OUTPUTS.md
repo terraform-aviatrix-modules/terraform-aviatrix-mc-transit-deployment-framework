@@ -107,7 +107,7 @@ module "spoke1" {
 ```
 
 ### Attach an external device connection
-In order to create an external device connection on a transit, we need the name of the transit gateway, the VPC ID as well as the gateway's AS number. Lets say we want to build it on transit3:
+In order to create an external device connection on a transit, we need the name of the transit gateway name, the VPC ID as well as the gateway's AS number. Lets say we want to build it on transit3:
 
 ```
 resource "aviatrix_transit_external_device_conn" "test" {
