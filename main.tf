@@ -93,12 +93,14 @@ module "firenet" {
 ### Peering for full_mesh peering mode ###
 #Create full mesh peering 
 module "full_mesh_peering" {
-  count   = local.peering_mode == "full_mesh" ? 1 : 0
   source  = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
-  version = "1.0.5"
+  version = "1.0.6"
+
+  count = local.peering_mode == "full_mesh" ? 1 : 0
 
   transit_gateways = [for k, v in module.transit : v.transit_gateway.gw_name]
   excluded_cidrs   = var.excluded_cidrs
+  prune_list       = local.peering_prune_list
 }
 ##########################################
 
@@ -106,12 +108,13 @@ module "full_mesh_peering" {
 #Create full mesh peering intra-cloud  
 module "full_mesh_optimized_peering_intra_cloud" {
   source  = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
-  version = "1.0.5"
+  version = "1.0.6"
 
   for_each = local.peering_mode == "full_mesh_optimized" ? toset(local.cloudlist) : []
 
   transit_gateways = [for k, v in module.transit : v.transit_gateway.gw_name if local.transit[k].transit_cloud == each.value]
   excluded_cidrs   = var.excluded_cidrs
+  prune_list       = local.peering_prune_list
 }
 
 #Create full mesh peering inter-cloud between 2 sets of gateways and prepend path to prefer intra-cloud over inter-cloud, for traffic originated outside of the Aviatrix transit (e.g. DC VPN connected to multiple transits).
@@ -125,6 +128,7 @@ module "full_mesh_optimized_peering_inter_cloud" {
 
   as_path_prepend = true
   excluded_cidrs  = var.excluded_cidrs
+  prune_list      = local.peering_prune_list
 }
 ##########################################
 

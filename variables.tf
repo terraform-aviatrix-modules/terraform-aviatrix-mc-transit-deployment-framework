@@ -128,6 +128,12 @@ variable "peering_map" {
   nullable    = false
 }
 
+variable "peering_prune_list" {
+  description = "List of peerings we do not want to get created."
+  type = list(map(string))
+  default = null
+}
+
 variable "excluded_cidrs" {
   type        = list(string)
   description = "List of CIDR's to exlude in peerings"
@@ -143,6 +149,8 @@ locals {
     transit_enable_transit_firenet = false
     firenet                        = false
   })
+
+  peering_prune_list = [for entry in var.peering_prune_list : tomap({ (module.transit[keys(entry)[0]].transit_gateway.gw_name) : (module.transit[values(entry)[0]].transit_gateway.gw_name) })]
 
   cloudlist = ["aws", "azure", "ali", "oci", "gcp"]
 

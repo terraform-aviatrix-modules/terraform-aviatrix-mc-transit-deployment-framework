@@ -1,4 +1,6 @@
-# Peering Mode
+# Peering
+
+## Peering Mode
 The selected peering mode determines how the Aviatrix transit gateways are peered together using the [transit peering resource](https://registry.terraform.io/providers/AviatrixSystems/aviatrix/latest/docs/resources/aviatrix_transit_gateway_peering). 
 
 ### Changing peering mode
@@ -63,3 +65,15 @@ enable_insane_mode_encryption_over_internet |
 
 ### None
 In case no peering is desired or when all peering configuration is done outside of this module, you can set peering_mode to none.
+
+## Pruning
+When using full_mesh or optimized_full_mesh peering, sometimes you need to make an exception for a specific peering. In stead of having to switch from a full mesh to defining all peerings custom, you can use the pruning capability to prevent certain peerings from being created. This allows you to create those peerings manually with specific settings (e.g. use private connection for a few peers while rest uses public internet).
+Be aware that the peering mode is exclusive, meaning you cannot combine custom peering with full_mesh or optimized_full_mesh together. So if you need to create specific peerings in addition to using full_mesh or optimized_full_mesh, you need to configure those peerings outside of this module. This list takes map values with the KEY of each transit entry. So no need to provide the actual transit name. The module will execute the lookup automatically.
+
+Example, which prevents transit1 to peer with transit2 and transit3, while using full_mesh or optimized_full_mesh peering mode:
+```
+  peering_prune_list = [
+    { "transit1" : "transit2" },
+    { "transit1" : "transit3" },
+  ]
+```
