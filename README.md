@@ -1,7 +1,7 @@
 # terraform-aviatrix-mc-transit-deployment-framework
 
 ### Description
-This module composes the [mc-transit](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit), [mc-firenet](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-firenet) and peering modules together to provide a reference transit layer implementation.
+This module composes the [mc-transit](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit), [mc-firenet](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-firenet) and peering modules([1](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering))([2](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering-advanced)) together to provide a reference transit layer implementation.
 
 <span style="color:red"><b>Warning:</b></span> This module leverages a Terraform [experimental feature](https://www.terraform.io/language/functions/defaults). Read the details of this feature and decide whether it is appropriate for you to adopt this module as-is, while using this feature.
 
