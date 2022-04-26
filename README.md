@@ -17,7 +17,7 @@ Check [compatibility list](https://github.com/terraform-aviatrix-modules/terrafo
 ```
 module "framework" {
   source  = "terraform-aviatrix-modules/mc-transit-deployment-framework/aviatrix"
-  version = "v1.0.0"
+  version = "v0.0.1"
 
   default_transit_accounts = {
     aws   = "AWS-Account",
