@@ -119,7 +119,8 @@ module "full_mesh_optimized_peering_intra_cloud" {
 
 #Create full mesh peering inter-cloud between 2 sets of gateways and prepend path to prefer intra-cloud over inter-cloud, for traffic originated outside of the Aviatrix transit (e.g. DC VPN connected to multiple transits).
 module "full_mesh_optimized_peering_inter_cloud" {
-  source = "git@github.com:terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering-advanced.git"
+  source  = "terraform-aviatrix-modules/mc-transit-peering-advanced/aviatrix"
+  version = "1.0.0"
 
   for_each = local.peering_mode == "full_mesh_optimized" ? toset(local.cloudlist) : []
 
