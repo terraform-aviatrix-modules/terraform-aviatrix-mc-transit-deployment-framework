@@ -8,7 +8,7 @@ This module composes the [mc-transit](https://github.com/terraform-aviatrix-modu
 ### Compatibility
 Module version | Terraform version | Controller version | Terraform provider version
 :--- | :--- | :--- | :---
-v1.0.0 | 0.15-1.x | 6.6 | >= 2.21.2
+v0.0.1 | 0.15-1.x | 6.6 | >= 2.21.2
 
 Check [release notes](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/master/RELEASE_NOTES.md) for more details.
 Check [compatibility list](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/master/COMPATIBILITY.md) for older versions.
