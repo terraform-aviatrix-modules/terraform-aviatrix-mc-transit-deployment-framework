@@ -10,10 +10,10 @@ Changing between modes requires a rebuild of all peerings and the advised way to
 Below a detailed explaination what the purpose for each peering mode is.
 
 ### Full Mesh
-Full mesh peering, automatically creates a transit peering between all available Aviatrix transit gateways, that were create within this module. Be default default routes will be excluded from propagating over these peerings.
+Full mesh peering, automatically creates a transit peering between all available Aviatrix transit gateways, that were create within this module. Be default default routes will be excluded from propagating over these peerings. Transit gateways that have enable_egress_transit_firenet enabled, will be filtered from peering.
 
 ### Optimized Full Mesh (default)
-Just like with full mesh peering, optimized full mesh automatically creates a transit peering between all available Aviatrix transit gateways, that were create within this module. By default, default routes will be excluded from propagating over these peerings as well. The difference is however, that any inter-cloud peerings (e.g. from AWS to Azure) are automatically AS Path prepended with 1 additional AS.
+Just like with full mesh peering, optimized full mesh automatically creates a transit peering between all available Aviatrix transit gateways, that were create within this module. By default, default routes will be excluded from propagating over these peerings as well. The difference is however, that any inter-cloud peerings (e.g. from AWS to Azure) are automatically AS Path prepended with 1 additional AS. Transit gateways that have enable_egress_transit_firenet enabled, will be filtered from peering.
 
 The reason for the AS Path prepending is to optimize traffic patterns that originate outside of the Aviatrix dataplane. E.g. a datacenter that is connected to Aviatrix transit gateways in multiple clouds, through an IPSEC connection. Without prepending, the paths to a remote region (where the datacenter does not have a direct connection to) look equal, regardless of traversing a single cloud or multiple cloud providers networks.
 

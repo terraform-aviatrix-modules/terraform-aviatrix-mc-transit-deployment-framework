@@ -25,6 +25,7 @@ variable "transit_firenet" {
     transit_enable_multi_tier_transit        = optional(bool),
     transit_enable_s2c_rx_balancing          = optional(bool),
     transit_enable_transit_firenet           = optional(bool),
+    transit_gw_name                          = optional(string),
     transit_ha_bgp_lan_interfaces            = optional(list(string)),
     transit_ha_cidr                          = optional(string),
     transit_ha_gw                            = optional(bool),
@@ -146,9 +147,10 @@ locals {
   peering_mode = lower(var.peering_mode)
 
   transit = defaults(var.transit_firenet, {
-    transit_segmentation           = true
-    transit_enable_transit_firenet = false
-    firenet                        = false
+    transit_segmentation                  = true
+    transit_enable_transit_firenet        = false
+    transit_enable_egress_transit_firenet = false
+    firenet                               = false
   })
 
   peering_prune_list = [for entry in var.peering_prune_list : tomap({ (module.transit[keys(entry)[0]].transit_gateway.gw_name) : (module.transit[values(entry)[0]].transit_gateway.gw_name) })]

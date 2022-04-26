@@ -1,7 +1,7 @@
 #This module builds out all transits
 module "transit" {
   source  = "terraform-aviatrix-modules/mc-transit/aviatrix"
-  version = "2.0.1"
+  version = "2.0.2"
 
   for_each = var.transit_firenet
 
@@ -27,8 +27,9 @@ module "transit" {
   enable_firenet                   = local.transit[each.key].transit_enable_firenet
   enable_multi_tier_transit        = local.transit[each.key].transit_enable_multi_tier_transit
   enable_s2c_rx_balancing          = local.transit[each.key].transit_enable_s2c_rx_balancing
-  enable_segmentation              = local.transit[each.key].transit_segmentation
+  enable_segmentation              = local.transit[each.key].transit_enable_egress_transit_firenet ? false : local.transit[each.key].transit_segmentation
   enable_transit_firenet           = local.transit[each.key].transit_enable_transit_firenet || local.transit[each.key].firenet
+  gw_name                          = local.transit[each.key].transit_gw_name
   ha_bgp_lan_interfaces            = local.transit[each.key].transit_ha_bgp_lan_interfaces
   ha_cidr                          = local.transit[each.key].transit_ha_cidr
   ha_gw                            = local.transit[each.key].transit_ha_gw
@@ -51,7 +52,7 @@ module "transit" {
 #This module builds out firenet, only on transits for which Firenet is enabled.
 module "firenet" {
   source  = "terraform-aviatrix-modules/mc-firenet/aviatrix"
-  version = "1.0.1"
+  version = "1.0.2"
 
   for_each = { for k, v in module.transit : k => v if local.transit[k].firenet } #Filter transits that have firenet enabled
 
@@ -98,7 +99,7 @@ module "full_mesh_peering" {
 
   count = local.peering_mode == "full_mesh" ? 1 : 0
 
-  transit_gateways = [for k, v in module.transit : v.transit_gateway.gw_name]
+  transit_gateways = [for k, v in module.transit : v.transit_gateway.gw_name if v.transit_gateway.enable_egress_transit_firenet == false] #Filter out egress transits
   excluded_cidrs   = var.excluded_cidrs
   prune_list       = local.peering_prune_list
 }
@@ -112,7 +113,7 @@ module "full_mesh_optimized_peering_intra_cloud" {
 
   for_each = local.peering_mode == "full_mesh_optimized" ? toset(local.cloudlist) : []
 
-  transit_gateways = [for k, v in module.transit : v.transit_gateway.gw_name if local.transit[k].transit_cloud == each.value]
+  transit_gateways = [for k, v in module.transit : v.transit_gateway.gw_name if local.transit[k].transit_cloud == each.value && v.transit_gateway.enable_egress_transit_firenet == false] #Filter out egress transits
   excluded_cidrs   = var.excluded_cidrs
   prune_list       = local.peering_prune_list
 }
@@ -124,8 +125,8 @@ module "full_mesh_optimized_peering_inter_cloud" {
 
   for_each = local.peering_mode == "full_mesh_optimized" ? toset(local.cloudlist) : []
 
-  set1 = { for k, v in module.transit : v.transit_gateway.gw_name => v.transit_gateway.local_as_number if local.transit[k].transit_cloud == each.value }                                                                 #Create list of all transit within specified cloud
-  set2 = { for k, v in module.transit : v.transit_gateway.gw_name => v.transit_gateway.local_as_number if !contains(slice(local.cloudlist, 0, index(local.cloudlist, each.value) + 1), local.transit[k].transit_cloud) } #Create list of all transit NOT in specified cloud
+  set1 = { for k, v in module.transit : v.transit_gateway.gw_name => v.transit_gateway.local_as_number if local.transit[k].transit_cloud == each.value && v.transit_gateway.enable_egress_transit_firenet == false }                                                                 #Create list of all transit within specified cloud and filter out egress transits
+  set2 = { for k, v in module.transit : v.transit_gateway.gw_name => v.transit_gateway.local_as_number if !contains(slice(local.cloudlist, 0, index(local.cloudlist, each.value) + 1), local.transit[k].transit_cloud) && v.transit_gateway.enable_egress_transit_firenet == false } #Create list of all transit NOT in specified cloud and filter out egress transits
 
   as_path_prepend = true
   excluded_cidrs  = var.excluded_cidrs
