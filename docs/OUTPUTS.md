@@ -90,7 +90,7 @@ module "spoke1" {
 }
 ```
 
-Alternatively, if we don't know which transit to use, we can also use the region_transit_map output and take the first transit on the list in that region. (Depends on the architecture whether this is a desireable approach)
+Alternatively, if we don't know which transit to use, we can also use the region_transit_map output and take the first transit on the list in that region. (Depends on the architecture whether this is a desireable approach, e.g. if any region only has max. one transit gw)
 
 ```
 module "spoke1" {
