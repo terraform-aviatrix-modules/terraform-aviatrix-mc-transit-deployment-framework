@@ -130,8 +130,8 @@ variable "peering_map" {
 
 variable "peering_prune_list" {
   description = "List of peerings we do not want to get created."
-  type = list(map(string))
-  default = null
+  type        = list(map(string))
+  default     = null
 }
 
 variable "excluded_cidrs" {
