@@ -6,9 +6,9 @@ This module composes the [mc-transit](https://github.com/terraform-aviatrix-modu
 <span style="color:red"><b>Warning:</b></span> This module leverages a Terraform [experimental feature](https://www.terraform.io/language/functions/defaults). Read the details of this feature and decide whether it is appropriate for you to adopt this module as-is, while using this feature.
 
 ### Compatibility
-Module version | Terraform version | Controller version | Terraform provider version
-:--- | :--- | :--- | :---
-v0.0.1 | 0.15-1.x | 6.6 | >= 2.21.2
+Module version | Terraform version | Controller version | Terraform provider version | Used Transit module | Used Firenet module
+:--- | :--- | :--- | :--- | :--- | :--- 
+v0.0.2 | >=1.1.0 | 6.7 | >= 2.22.0 | v2.1.1 | 1.0.2
 
 Check [release notes](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/master/RELEASE_NOTES.md) for more details.
 Check [compatibility list](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/master/COMPATIBILITY.md) for older versions.
