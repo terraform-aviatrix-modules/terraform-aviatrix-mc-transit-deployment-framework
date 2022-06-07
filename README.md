@@ -8,7 +8,7 @@ This module composes the [mc-transit](https://github.com/terraform-aviatrix-modu
 ### Compatibility
 Module version | Terraform version | Controller version | Terraform provider version | Used Transit module | Used Firenet module
 :--- | :--- | :--- | :--- | :--- | :--- 
-v0.0.2 | >=1.1.0 | >= 6.7 | ~> 2.22.0 | v2.1.1 | 1.0.2
+v0.0.3 | >=1.1.0 | >= 6.7 | ~> 2.22.0 | v2.1.2 | v1.1.0
 
 Check [release notes](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/master/RELEASE_NOTES.md) for more details.
 Check [compatibility list](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/master/COMPATIBILITY.md) for older versions.
@@ -17,7 +17,7 @@ Check [compatibility list](https://github.com/terraform-aviatrix-modules/terrafo
 ```
 module "framework" {
   source  = "terraform-aviatrix-modules/mc-transit-deployment-framework/aviatrix"
-  version = "v0.0.2"
+  version = "v0.0.3"
 
   default_transit_accounts = {
     aws   = "AWS-Account",

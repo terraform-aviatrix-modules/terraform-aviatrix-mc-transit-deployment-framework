@@ -7,7 +7,7 @@ For the examples below, we will assume that the below environment was deployed. 
 ```
 module "framework" {
   source  = "terraform-aviatrix-modules/mc-transit-deployment-framework/aviatrix"
-  version = "v1.0.0"
+  version = "v0.0.3"
 
   default_transit_accounts = {
     aws   = "AWS-Account",
@@ -79,7 +79,7 @@ In order to attach a spoke gateway, we only need the name of the transit gateway
 ```
 module "spoke1" {
   source  = "terraform-aviatrix-modules/mc-spoke/aviatrix"
-  version = "1.1.2"
+  version = "1.2.1"
 
   cloud      = "aws"
   name       = "spoke1"
@@ -95,7 +95,7 @@ Alternatively, if we don't know which transit to use, we can also use the region
 ```
 module "spoke1" {
   source  = "terraform-aviatrix-modules/mc-spoke/aviatrix"
-  version = "1.1.2"
+  version = "1.2.1"
 
   cloud      = "aws"
   name       = "spoke1"
