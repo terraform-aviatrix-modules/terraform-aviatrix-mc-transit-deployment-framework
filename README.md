@@ -66,7 +66,7 @@ module "framework" {
       transit_cloud       = "gcp",
       transit_cidr        = "10.1.4.0/23",
       transit_lan_cidr    = "10.99.1.0/24",
-      transit_egress_cidr = "10.99.2.0/24",
+      firenet_egress_cidr = "10.99.2.0/24",
       transit_region_name = "us-east1",
       transit_asn         = 65103,
       firenet             = true,
