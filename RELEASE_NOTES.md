@@ -1,5 +1,8 @@
 # terraform-aviatrix-mc-transit-deployment-framework - release notes
 
+## v0.0.4
+Bump to bump to latest 6.7 compatible modules.
+
 ## v0.0.3
 Bump to bump to latest 6.7 compatible modules. Resolves an issue with 6.7 when deploying firenet in GCP.
 

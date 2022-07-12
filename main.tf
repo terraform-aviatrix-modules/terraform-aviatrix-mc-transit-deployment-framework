@@ -1,7 +1,7 @@
 #This module builds out all transits
 module "transit" {
   source  = "terraform-aviatrix-modules/mc-transit/aviatrix"
-  version = "2.1.2"
+  version = "2.1.5"
 
   for_each = var.transit_firenet
 
@@ -47,12 +47,18 @@ module "transit" {
   single_ip_snat                   = local.transit[each.key].transit_single_ip_snat
   tags                             = local.transit[each.key].transit_tags
   tunnel_detection_time            = local.transit[each.key].transit_tunnel_detection_time
+  availability_domain              = local.transit[each.key].transit_availability_domain
+  ha_availability_domain           = local.transit[each.key].transit_ha_availability_domain
+  fault_domain                     = local.transit[each.key].transit_fault_domain
+  ha_fault_domain                  = local.transit[each.key].transit_ha_fault_domain
+  enable_preserve_as_path          = local.transit[each.key].transit_enable_preserve_as_path
+  enable_gateway_load_balancer     = local.transit[each.key].transit_transit_enable_gateway_load_balancer
 }
 
 #This module builds out firenet, only on transits for which Firenet is enabled.
 module "firenet" {
   source  = "terraform-aviatrix-modules/mc-firenet/aviatrix"
-  version = "1.1.0"
+  version = "1.1.2"
 
   for_each = { for k, v in module.transit : k => v if local.transit[k].firenet } #Filter transits that have firenet enabled
 
@@ -85,7 +91,6 @@ module "firenet" {
   storage_access_key_1                 = local.transit[each.key].firenet_storage_access_key_1
   storage_access_key_2                 = local.transit[each.key].firenet_storage_access_key_2
   tags                                 = local.transit[each.key].firenet_tags
-  use_gwlb                             = local.transit[each.key].firenet_use_gwlb
   user_data_1                          = local.transit[each.key].firenet_user_data_1
   user_data_2                          = local.transit[each.key].firenet_user_data_2
   username                             = local.transit[each.key].firenet_username

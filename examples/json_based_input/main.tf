@@ -1,6 +1,6 @@
 module "framework" {
   source  = "terraform-aviatrix-modules/mc-transit-deployment-framework/aviatrix"
-  version = "v0.0.3"
+  version = "v0.0.4"
 
   default_transit_accounts = {
     azure = "Azure",
