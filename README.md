@@ -14,7 +14,7 @@ Check [release notes](https://github.com/terraform-aviatrix-modules/terraform-av
 Check [compatibility list](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/COMPATIBILITY.md) for older versions.
 
 ### Usage Example
-```
+```hcl
 module "framework" {
   source  = "terraform-aviatrix-modules/mc-transit-deployment-framework/aviatrix"
   version = "v0.0.4"

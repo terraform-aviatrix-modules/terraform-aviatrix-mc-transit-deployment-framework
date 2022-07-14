@@ -9,7 +9,7 @@ transit.json:
 
 This file can then be ingested with the yamldecode function:
 
-```
+```hcl
 module "framework" {
   source  = "terraform-aviatrix-modules/mc-transit-deployment-framework/aviatrix"
   version = "v0.0.4"
