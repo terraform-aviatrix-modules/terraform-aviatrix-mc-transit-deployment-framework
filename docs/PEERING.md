@@ -32,7 +32,7 @@ When the above peering modes lack the required flexibility for your peering use 
 As this is aimed for totally customized use, no defaults are assumed here. Which means, no networks CIDR's are filtered by default (e.g. 0.0.0.0/0).
 
 This map could look like this for example where we only want 2 peerings to be created (module is named "framework" in this example):
-```
+```hcl
   peering_map = {
     peering1 : {
       gw1_name                            = module.framework.transit["transit1"].transit_gateway.gw_name,
@@ -71,7 +71,7 @@ When using full_mesh or optimized_full_mesh peering, sometimes you need to make 
 Be aware that the peering mode is exclusive, meaning you cannot combine custom peering with full_mesh or optimized_full_mesh together. So if you need to create specific peerings in addition to using full_mesh or optimized_full_mesh, you need to configure those peerings outside of this module. This list takes map values with the KEY of each transit entry. So no need to provide the actual transit name. The module will execute the lookup automatically.
 
 Example, which prevents transit1 to peer with transit2 and transit3, while using full_mesh or optimized_full_mesh peering mode:
-```
+```hcl
   peering_prune_list = [
     { "transit1" : "transit2" },
     { "transit1" : "transit3" },

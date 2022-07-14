@@ -4,7 +4,7 @@ This module creates all resources for your core cloud network; the transit layer
 ### Example deployment
 For the examples below, we will assume that the below environment was deployed. 3 transits, with Firenet in different clouds:
 
-```
+```hcl
 module "framework" {
   source  = "terraform-aviatrix-modules/mc-transit-deployment-framework/aviatrix"
   version = "v0.0.3"
@@ -60,23 +60,23 @@ Bear in mind that in this example, "transit1", "transit2" and "transit3" are the
 Some attributes are commonly used. This section shows how to easily access them from the output.
 
 Generic example:
-```
+```hcl
 module.framework.<output_name>["<instance_key>"].attribute
 ```
 
 VPC ID, for transit1:
-```
+```hcl
 module.framework.transit["transit1"].vpc.vpc_id
 ```
 
 Transit gateway name, for transit2:
-```
+```hcl
 module.framework.transit["transit2"].transit_gateway.gw_name
 ```
 
 ### Attach a spoke
 In order to attach a spoke gateway, we only need the name of the transit gateway we want to attach to. Lets say we want to attach it to transit1, which is in the same region:
-```
+```hcl
 module "spoke1" {
   source  = "terraform-aviatrix-modules/mc-spoke/aviatrix"
   version = "1.2.1"
@@ -92,7 +92,7 @@ module "spoke1" {
 
 Alternatively, if we don't know which transit to use, we can also use the region_transit_map output and take the first transit on the list in that region. (Depends on the architecture whether this is a desireable approach, e.g. if any region only has max. one transit gw)
 
-```
+```hcl
 module "spoke1" {
   source  = "terraform-aviatrix-modules/mc-spoke/aviatrix"
   version = "1.2.1"
@@ -109,7 +109,7 @@ module "spoke1" {
 ### Attach an external device connection
 In order to create an external device connection on a transit, we need the name of the transit gateway name, the VPC ID as well as the gateway's AS number. Lets say we want to build it on transit3:
 
-```
+```hcl
 resource "aviatrix_transit_external_device_conn" "test" {
   vpc_id            = module.framework.transit["transit3"].vpc.vpc_id
   gw_name           = module.framework.transit["transit3"].transit_gateway.gw_name
@@ -124,7 +124,7 @@ resource "aviatrix_transit_external_device_conn" "test" {
 ### Getting the management IP's of the NGFW's in a firenet
 In this case we want to access information of the firenet NGFW instances created in this module. Lets say the firenet instances in transit1.
 
-```
+```hcl
 output "transit1_management_ips" {
   value = module.framework.firenet["transit1"].aviatrix_firewall_instance.*.public_ip
 }
