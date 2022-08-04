@@ -1,7 +1,7 @@
 #This module builds out all transits
 module "transit" {
   source  = "terraform-aviatrix-modules/mc-transit/aviatrix"
-  version = "2.1.6"
+  version = "2.2.0"
 
   for_each = var.transit_firenet
 
@@ -52,7 +52,11 @@ module "transit" {
   fault_domain                     = local.transit[each.key].transit_fault_domain
   ha_fault_domain                  = local.transit[each.key].transit_ha_fault_domain
   enable_preserve_as_path          = local.transit[each.key].transit_enable_preserve_as_path
-  enable_gateway_load_balancer     = local.transit[each.key].transit_transit_enable_gateway_load_balancer
+  enable_gateway_load_balancer     = local.transit[each.key].transit_enable_gateway_load_balancer
+  bgp_lan_interfaces_count         = local.transit[each.key].transit_bgp_lan_interfaces_count
+  private_mode_lb_vpc_id           = local.transit[each.key].transit_private_mode_lb_vpc_id
+  private_mode_subnet_zone         = local.transit[each.key].transit_private_mode_subnet_zone
+  ha_private_mode_subnet_zone      = local.transit[each.key].transit_ha_private_mode_subnet_zone
 }
 
 #This module builds out firenet, only on transits for which Firenet is enabled.
