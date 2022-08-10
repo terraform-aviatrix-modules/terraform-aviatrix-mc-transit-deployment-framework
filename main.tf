@@ -57,12 +57,13 @@ module "transit" {
   private_mode_lb_vpc_id           = local.transit[each.key].transit_private_mode_lb_vpc_id
   private_mode_subnet_zone         = local.transit[each.key].transit_private_mode_subnet_zone
   ha_private_mode_subnet_zone      = local.transit[each.key].transit_ha_private_mode_subnet_zone
+  private_mode_subnets             = local.transit[each.key].transit_private_mode_subnets
 }
 
 #This module builds out firenet, only on transits for which Firenet is enabled.
 module "firenet" {
   source  = "terraform-aviatrix-modules/mc-firenet/aviatrix"
-  version = "1.1.2"
+  version = "1.2.0"
 
   for_each = { for k, v in module.transit : k => v if local.transit[k].firenet } #Filter transits that have firenet enabled
 
@@ -78,7 +79,6 @@ module "firenet" {
   egress_cidr                          = local.transit[each.key].firenet_egress_cidr
   egress_enabled                       = local.transit[each.key].firenet_egress_enabled
   egress_static_cidrs                  = local.transit[each.key].firenet_egress_static_cidrs
-  fail_close_enabled                   = local.transit[each.key].firenet_fail_close_enabled
   file_share_folder_1                  = local.transit[each.key].firenet_file_share_folder_1
   file_share_folder_2                  = local.transit[each.key].firenet_file_share_folder_2
   firewall_image                       = coalesce(local.transit[each.key].firenet_firewall_image, lookup(var.default_firenet_firewall_image, local.transit[each.key].transit_cloud, null))

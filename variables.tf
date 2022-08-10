@@ -55,6 +55,7 @@ variable "transit_firenet" {
     transit_private_mode_lb_vpc_id           = optional(string),
     transit_private_mode_subnet_zone         = optional(string),
     transit_ha_private_mode_subnet_zone      = optional(string),
+    transit_private_mode_subnets             = optional(bool),
 
     #Firenet arguments
     firenet                                      = optional(bool),
@@ -68,7 +69,6 @@ variable "transit_firenet" {
     firenet_egress_cidr                          = optional(string),
     firenet_egress_enabled                       = optional(bool),
     firenet_egress_static_cidrs                  = optional(list(string)),
-    firenet_fail_close_enabled                   = optional(bool),
     firenet_file_share_folder_1                  = optional(string),
     firenet_file_share_folder_2                  = optional(string),
     firenet_firewall_image                       = optional(string),
