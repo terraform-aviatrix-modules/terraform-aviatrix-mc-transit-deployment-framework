@@ -1,5 +1,8 @@
 # terraform-aviatrix-mc-transit-deployment-framework - release notes
 
+## v1.0.0
+Graduate Terraform experimental optional feature to GA 1.3.0 version.
+
 ## v0.0.7
 Bump to latest 6.9 compatible modules
 

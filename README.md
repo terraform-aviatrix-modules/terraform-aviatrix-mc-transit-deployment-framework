@@ -3,12 +3,10 @@
 ### Description
 This module composes the [mc-transit](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit), [mc-firenet](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-firenet) and peering modules([1](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering))([2](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering-advanced)) together to provide a reference transit layer implementation.
 
-<span style="color:red"><b>Warning:</b></span> This module leverages a Terraform [experimental feature](https://www.terraform.io/language/functions/defaults). Read the details of this feature and decide whether it is appropriate for you to adopt this module as-is, while using this feature.
-
 ### Compatibility
 Module version | Terraform version | Controller version | Terraform provider version | Used Transit module | Used Firenet module
 :--- | :--- | :--- | :--- | :--- | :--- 
-v0.0.7 | >=1.1.1 | >= 6.9 | ~> 2.24.0 | v2.3.0 | v1.2.0
+v1.0.0 | >=1.3.0 | >= 6.9 | ~> 2.24.0 | v2.3.0 | v1.3.0
 
 Check [release notes](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/RELEASE_NOTES.md) for more details.
 Check [compatibility list](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/COMPATIBILITY.md) for older versions.
@@ -17,7 +15,7 @@ Check [compatibility list](https://github.com/terraform-aviatrix-modules/terrafo
 ```hcl
 module "framework" {
   source  = "terraform-aviatrix-modules/mc-transit-deployment-framework/aviatrix"
-  version = "v0.0.5"
+  version = "v1.0.0"
 
   default_transit_accounts = {
     aws   = "AWS-Account",
