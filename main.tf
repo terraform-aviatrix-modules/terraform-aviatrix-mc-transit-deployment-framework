@@ -1,7 +1,7 @@
 #This module builds out all transits
 module "transit" {
   source  = "terraform-aviatrix-modules/mc-transit/aviatrix"
-  version = "2.2.0"
+  version = "2.2.1"
 
   for_each = var.transit_firenet
 
@@ -55,9 +55,12 @@ module "transit" {
   enable_gateway_load_balancer     = local.transit[each.key].transit_enable_gateway_load_balancer
   bgp_lan_interfaces_count         = local.transit[each.key].transit_bgp_lan_interfaces_count
   private_mode_lb_vpc_id           = local.transit[each.key].transit_private_mode_lb_vpc_id
-  private_mode_subnet_zone         = local.transit[each.key].transit_private_mode_subnet_zone
-  ha_private_mode_subnet_zone      = local.transit[each.key].transit_ha_private_mode_subnet_zone
   private_mode_subnets             = local.transit[each.key].transit_private_mode_subnets
+  allocate_new_eip                 = local.transit[each.key].transit_allocate_new_eip
+  eip                              = local.transit[each.key].transit_eip
+  ha_eip                           = local.transit[each.key].transit_ha_eip
+  azure_eip_name_resource_group    = local.transit[each.key].transit_azure_eip_name_resource_group
+  ha_azure_eip_name_resource_group = local.transit[each.key].transit_ha_azure_eip_name_resource_group
 }
 
 #This module builds out firenet, only on transits for which Firenet is enabled.
@@ -104,7 +107,7 @@ module "firenet" {
 #Create full mesh peering 
 module "full_mesh_peering" {
   source  = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
-  version = "1.0.6"
+  version = "1.0.8"
 
   count = local.peering_mode == "full_mesh" ? 1 : 0
 
@@ -118,7 +121,7 @@ module "full_mesh_peering" {
 #Create full mesh peering intra-cloud  
 module "full_mesh_optimized_peering_intra_cloud" {
   source  = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
-  version = "1.0.6"
+  version = "1.0.8"
 
   for_each = local.peering_mode == "full_mesh_optimized" ? toset(local.cloudlist) : []
 

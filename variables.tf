@@ -56,6 +56,11 @@ variable "transit_firenet" {
     transit_private_mode_subnet_zone         = optional(string),
     transit_ha_private_mode_subnet_zone      = optional(string),
     transit_private_mode_subnets             = optional(bool),
+    transit_allocate_new_eip                 = optional(bool),
+    transit_eip                              = optional(string),
+    transit_ha_eip                           = optional(string),
+    transit_azure_eip_name_resource_group    = optional(string),
+    transit_ha_azure_eip_name_resource_group = optional(string),
 
     #Firenet arguments
     firenet                                      = optional(bool),
