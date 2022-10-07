@@ -19,12 +19,12 @@ variable "transit_firenet" {
     transit_enable_active_standby_preemptive = optional(bool),
     transit_enable_advertise_transit_cidr    = optional(bool),
     transit_enable_bgp_over_lan              = optional(bool),
-    transit_enable_egress_transit_firenet    = optional(bool),
+    transit_enable_egress_transit_firenet    = optional(bool, false),
     transit_enable_encrypt_volume            = optional(bool),
     transit_enable_firenet                   = optional(bool),
     transit_enable_multi_tier_transit        = optional(bool),
     transit_enable_s2c_rx_balancing          = optional(bool),
-    transit_enable_transit_firenet           = optional(bool),
+    transit_enable_transit_firenet           = optional(bool, false),
     transit_gw_name                          = optional(string),
     transit_ha_bgp_lan_interfaces            = optional(list(string)),
     transit_ha_cidr                          = optional(string),
@@ -40,7 +40,7 @@ variable "transit_firenet" {
     transit_legacy_transit_vpc               = optional(bool),
     transit_name                             = optional(string),
     transit_resource_group                   = optional(string),
-    transit_segmentation                     = optional(bool),
+    transit_segmentation                     = optional(bool, true),
     transit_single_az_ha                     = optional(bool),
     transit_single_ip_snat                   = optional(bool),
     transit_tags                             = optional(map(string)),
@@ -63,7 +63,7 @@ variable "transit_firenet" {
     transit_ha_azure_eip_name_resource_group = optional(string),
 
     #Firenet arguments
-    firenet                                      = optional(bool),
+    firenet                                      = optional(bool, false),
     firenet_attached                             = optional(bool),
     firenet_bootstrap_bucket_name_1              = optional(string),
     firenet_bootstrap_bucket_name_2              = optional(string),
@@ -158,15 +158,7 @@ variable "excluded_cidrs" {
 }
 
 locals {
-  peering_mode = lower(var.peering_mode)
-
-  transit = defaults(var.transit_firenet, {
-    transit_segmentation                  = true
-    transit_enable_transit_firenet        = false
-    transit_enable_egress_transit_firenet = false
-    firenet                               = false
-  })
-
+  peering_mode       = lower(var.peering_mode)
   peering_prune_list = [for entry in var.peering_prune_list : tomap({ (module.transit[keys(entry)[0]].transit_gateway.gw_name) : (module.transit[values(entry)[0]].transit_gateway.gw_name) })]
 
   cloudlist = ["aws", "azure", "ali", "oci", "gcp"]
