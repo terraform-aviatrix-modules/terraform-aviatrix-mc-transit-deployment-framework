@@ -1,7 +1,7 @@
 #This module builds out all transits
 module "transit" {
   source  = "terraform-aviatrix-modules/mc-transit/aviatrix"
-  version = "2.2.1"
+  version = "2.3.0"
 
   for_each = var.transit_firenet
 
@@ -66,7 +66,7 @@ module "transit" {
 #This module builds out firenet, only on transits for which Firenet is enabled.
 module "firenet" {
   source  = "terraform-aviatrix-modules/mc-firenet/aviatrix"
-  version = "1.2.0"
+  version = "1.3.0"
 
   for_each = { for k, v in module.transit : k => v if local.transit[k].firenet } #Filter transits that have firenet enabled
 
