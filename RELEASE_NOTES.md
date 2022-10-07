@@ -1,5 +1,9 @@
 # terraform-aviatrix-mc-transit-deployment-framework - release notes
 
+## v0.0.6
+- Add support for mc-transit module 2.2.1
+- Add support for mc-peering module 1.0.8
+
 ## v0.0.5
 Bump to bump to 6.8 compatible modules.
 
