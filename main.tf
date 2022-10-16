@@ -68,7 +68,7 @@ module "firenet" {
   source  = "terraform-aviatrix-modules/mc-firenet/aviatrix"
   version = "1.3.0"
 
-  for_each = { for k, v in module.transit : k => v if var.transit_firenet[k].firenet } #Filter transits that have firenet enabled
+  for_each = { for k, v in var.transit_firenet : k => v if v.firenet } #Filter transits that have firenet enabled
 
   transit_module = module.transit[each.key]
 
