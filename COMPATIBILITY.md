@@ -1,6 +1,7 @@
 ### Compatibility
 Module version | Terraform version | Controller version | Terraform provider version | Used Transit module | Used Firenet module
 :--- | :--- | :--- | :--- | :--- | :---
+v1.0.1 | >=1.3.0 | >= 6.9 | ~> 2.24.0 | v2.3.0 | v1.3.0
 v1.0.0 | >=1.3.0 | >= 6.9 | ~> 2.24.0 | v2.3.0 | v1.3.0
 v0.0.7 | >=1.1.1 | >= 6.9 | ~> 2.24.0 | v2.3.0 | v1.3.0
 v0.0.6 | >=1.1.1 | >= 6.8 | ~> 2.23.0 | v2.2.1 | v1.2.0

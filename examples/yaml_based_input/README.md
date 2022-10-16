@@ -7,7 +7,7 @@ transit.yaml:
 transit1:
   ha_gw: false
   transit_asn: 65101
-  transit_cidr: 10.1.0.0/23
+  transit_cidr: 10.1.0.1/23
   transit_cloud: aws
   transit_region_name: us-west-1
 
@@ -31,7 +31,7 @@ This file can then be ingested with the yamldecode function:
 ```
 module "framework" {
   source  = "terraform-aviatrix-modules/mc-transit-deployment-framework/aviatrix"
-  version = "v1.0.0"
+  version = "v1.0.1"
 
   default_transit_accounts = {
     azure = "Azure",

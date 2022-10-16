@@ -1,5 +1,8 @@
 # terraform-aviatrix-mc-transit-deployment-framework - release notes
 
+## v1.0.1
+Fix issue in logic caused by moving to 1.3.0 optional feature
+
 ## v1.0.0
 Graduate Terraform experimental optional feature to GA 1.3.0 version.
 
