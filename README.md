@@ -6,7 +6,7 @@ This module composes the [mc-transit](https://github.com/terraform-aviatrix-modu
 ### Compatibility
 Module version | Terraform version | Controller version | Terraform provider version | Used Transit module | Used Firenet module
 :--- | :--- | :--- | :--- | :--- | :--- 
-v1.0.1 | >=1.3.0 | >= 6.9 | ~> 2.24.0 | v2.3.0 | v1.3.0
+v1.1.0 | >=1.3.0 | >= 7.0 | ~> 3.0.0 | v2.4.0 | v1.4.0
 
 Check [release notes](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/RELEASE_NOTES.md) for more details.
 Check [compatibility list](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/COMPATIBILITY.md) for older versions.

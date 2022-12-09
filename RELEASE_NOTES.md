@@ -1,5 +1,8 @@
 # terraform-aviatrix-mc-transit-deployment-framework - release notes
 
+## v1.1.0
+Bump to 7.0 compatible modules
+
 ## v1.0.1
 Fix issue in logic caused by moving to 1.3.0 optional feature
 
