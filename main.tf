@@ -1,7 +1,7 @@
 #This module builds out all transits
 module "transit" {
   source  = "terraform-aviatrix-modules/mc-transit/aviatrix"
-  version = "2.4.0"
+  version = "2.4.1"
 
   for_each = var.transit_firenet
 
