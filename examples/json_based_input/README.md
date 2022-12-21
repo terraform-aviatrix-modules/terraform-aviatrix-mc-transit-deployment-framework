@@ -12,7 +12,7 @@ This file can then be ingested with the yamldecode function:
 ```hcl
 module "framework" {
   source  = "terraform-aviatrix-modules/mc-transit-deployment-framework/aviatrix"
-  version = "v1.1.0"
+  version = "v1.1.1"
 
   default_transit_accounts = {
     azure = "Azure",
