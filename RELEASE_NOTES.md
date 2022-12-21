@@ -1,5 +1,8 @@
 # terraform-aviatrix-mc-transit-deployment-framework - release notes
 
+## v1.1.1
+Add support for enable_vpc_dns_server
+
 ## v1.1.0
 Bump to 7.0 compatible modules
 
