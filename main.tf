@@ -61,6 +61,7 @@ module "transit" {
   ha_eip                           = each.value.transit_ha_eip
   azure_eip_name_resource_group    = each.value.transit_azure_eip_name_resource_group
   ha_azure_eip_name_resource_group = each.value.transit_ha_azure_eip_name_resource_group
+  enable_vpc_dns_server            = each.value.transit_enable_vpc_dns_server
 }
 
 #This module builds out firenet, only on transits for which Firenet is enabled.

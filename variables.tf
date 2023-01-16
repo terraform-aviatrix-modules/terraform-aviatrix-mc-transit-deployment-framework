@@ -61,6 +61,7 @@ variable "transit_firenet" {
     transit_ha_eip                           = optional(string),
     transit_azure_eip_name_resource_group    = optional(string),
     transit_ha_azure_eip_name_resource_group = optional(string),
+    transit_enable_vpc_dns_server            = optional(bool),
 
     #Firenet arguments
     firenet                                      = optional(bool, false),
