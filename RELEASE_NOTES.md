@@ -1,11 +1,18 @@
 # terraform-aviatrix-mc-transit-deployment-framework - release notes
 
+## v1.1.2
+- Add support for enable_monitor_gateway_subnets
+
 ## v1.1.1
 - Add support for enable_vpc_dns_server
 - Fix issue where default password in mc-firenet is overwritten by the null default in this module.
 
 ## v1.1.0
 Bump to 7.0 compatible modules
+
+## v1.0.3
+- Bump mc-transit module version to 2.3.3. This is required to support for VPC DNS server. Because of this, v1.0.2 of this module throws an issue.
+- Add support for enable_monitor_gateway_subnets
 
 ## v1.0.2
 - Fix issue where default password in mc-firenet is overwritten by the null default in this module.
