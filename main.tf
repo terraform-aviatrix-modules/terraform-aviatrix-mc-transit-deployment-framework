@@ -1,7 +1,7 @@
 #This module builds out all transits
 module "transit" {
   source  = "terraform-aviatrix-modules/mc-transit/aviatrix"
-  version = "2.3.0"
+  version = "2.3.3"
 
   for_each = var.transit_firenet
 
@@ -62,6 +62,7 @@ module "transit" {
   azure_eip_name_resource_group    = each.value.transit_azure_eip_name_resource_group
   ha_azure_eip_name_resource_group = each.value.transit_ha_azure_eip_name_resource_group
   enable_vpc_dns_server            = each.value.transit_enable_vpc_dns_server
+  enable_monitor_gateway_subnets   = each.value.transit_enable_monitor_gateway_subnets
 }
 
 #This module builds out firenet, only on transits for which Firenet is enabled.
