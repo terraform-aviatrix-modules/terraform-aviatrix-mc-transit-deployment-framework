@@ -1,5 +1,27 @@
 # terraform-aviatrix-mc-transit-deployment-framework
 
+```diff
+- This repository has been forked to adapt a new name to be better compatible with platform naming conventions and use case alignment. Moving forward, this repository is no longer maintained and continued maintenance is taking place on this new repository: https://github.com/terraform-aviatrix-modules/terraform-aviatrix-backbone
+```
+
+If you are currently using this module in Terraform, update your source to the new repository/Terraform registry.
+
+e.g. from:
+```hcl
+module "framework" {
+  source  = "terraform-aviatrix-modules/mc-transit-deployment-framework/aviatrix"
+  version = "v1.1.1"
+```
+
+to:
+
+```hcl
+module "framework" {
+  source  = "terraform-aviatrix-modules/backbone/aviatrix"
+  version = "v1.1.1"
+```
+
+
 ### Description
 This module composes the [mc-transit](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit), [mc-firenet](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-firenet) and peering modules([1](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering))([2](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering-advanced)) together to provide a reference transit layer implementation.
 
